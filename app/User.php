@@ -37,7 +37,7 @@ class User extends Authenticatable
 
     public function phone()
     {
-        return $this->hasMany('App\Phone');
+        return $this->hasOne('App\Phone');
     }
     public function details()
     {
