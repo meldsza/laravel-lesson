@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Student;
 use App\User;
 use DB;
+use Hash;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
