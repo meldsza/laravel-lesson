@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Student;
+use App\Faculty;
 use App\User;
 use DB;
 use Illuminate\Http\Request;
 
-class StudentController extends Controller
+class FacultyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        return Student::all();
+        return Faculty::all();
     }
 
     /**
@@ -41,16 +41,17 @@ class StudentController extends Controller
             'name' => 'string|required',
             'email' => 'email|required',
             'password' => 'string|required|min:5',
-            'usn' => 'string|required|unique:students,usn',
+            'employee_code' => 'string|required',
+            'designation' => 'string|required',
         ]);
         $data['password'] = Hash::make($data['password']);
         DB::transaction(function () {
-            $student = new Student();
-            $student->fill($data);
-            $student->save();
+            $faculty = new Faculty();
+            $faculty->fill($data);
+            $faculty->save();
             $user = new User();
             $user->fill($data);
-            $user->details()->associate($student)->save();
+            $user->details()->associate($faculty)->save();
         }, 5);
         return ['message' => 'success'];
     }
@@ -58,21 +59,21 @@ class StudentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Student  $student
+     * @param  \App\Faculty  $faculty
      * @return \Illuminate\Http\Response
      */
-    public function show(Student $student)
+    public function show(Faculty $faculty)
     {
-        return $student;
+        return $faculty;
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Student  $student
+     * @param  \App\Faculty  $faculty
      * @return \Illuminate\Http\Response
      */
-    public function edit(Student $student)
+    public function edit(Faculty $faculty)
     {
     }
 
@@ -80,36 +81,37 @@ class StudentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Student  $student
+     * @param  \App\Faculty  $faculty
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Student $student)
+    public function update(Request $request, Faculty $faculty)
     {
         $data = $request->validate([
             'name' => 'string|required',
-            'usn' => 'string|required|unique:students,usn,' . $student->id . ',id',
+            'employee_code' => 'string|required|unique:faculties,employee_code,' . $faculty->id . ',id',
+            'designation' => 'string|required',
         ]);
         DB::transaction(function () {
-            $student->fill($data);
-            $user = $student->user;
+            $faculty->fill($data);
+            $user = $faculty->user;
             $user->fill($data);
             $user->save();
-            $student->save();
+            $faculty->save();
         }, 5);
-        return $student;
+        return $faculty;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Student  $student
+     * @param  \App\Faculty  $faculty
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Student $student)
+    public function destroy(Faculty $faculty)
     {
         DB::transaction(function () {
-            $student->user->delete();
-            $student->delete();
+            $faculty->user->delete();
+            $faculty->delete();
         });
     }
 }
