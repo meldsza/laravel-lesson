@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'details_type', 'details_id',
+        'name', 'email', 'password',
     ];
 
     /**
@@ -41,6 +41,7 @@ class User extends Authenticatable
     }
     public function details()
     {
+        //details_id, details_type
         return $this->morphTo();
     }
     public function subjects()
