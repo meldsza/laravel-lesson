@@ -26,3 +26,6 @@ Route::view('/test', 'test');
 Route::resource('faculties', 'FacultyController');
 
 Route::resource('students', 'StudentController');
+
+Route::resource('modules.subModules', 'SubModuleController');
+Route::resource('modules', 'ModuleController');
