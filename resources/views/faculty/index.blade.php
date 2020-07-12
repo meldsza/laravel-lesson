@@ -51,6 +51,8 @@
                                         @csrf
                                         @method('delete')
                                         <a class="btn btn-primary mr-2"
+                                            href="{{route('faculties.show', ['faculty'=>$faculty->id])}}">View</a>
+                                        <a class="btn btn-primary mr-2"
                                             href="{{route('faculties.edit', ['faculty'=>$faculty->id])}}">Update</a>
                                         <button class="btn btn-danger mr-2" type="submit">Delete</button>
                                     </form>

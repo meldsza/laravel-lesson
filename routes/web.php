@@ -24,4 +24,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::view('/test', 'test');
 
 Route::resource('faculties', 'FacultyController');
+
 Route::resource('students', 'StudentController');

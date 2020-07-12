@@ -8,6 +8,7 @@
                 <div class="card-header">{{ __('Students') }}</div>
 
                 <div class="card-body">
+                    <a class="btn btn-primary float-right mb-2" href="{{route('students.create')}}">Create Student</a>
                     <table class="table">
                         <thead>
                             <tr>

@@ -41,7 +41,7 @@ class FacultyController extends Controller
         $data = $request->validate([
             'name' => 'string|required',
             'email' => 'email|required|unique:users,email',
-            'password' => 'string|required|min:5',
+            'password' => 'string|required|min:5|confirmed',
             'employee_code' => 'string|required',
             'designation' => 'string|required',
         ]);
