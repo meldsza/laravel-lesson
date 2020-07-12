@@ -27,7 +27,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        //
+        return view('student.create');
     }
 
     /**
@@ -40,12 +40,12 @@ class StudentController extends Controller
     {
         $data = $request->validate([
             'name' => 'string|required',
-            'email' => 'email|required',
+            'email' => 'email|required|unique:users,email',
             'password' => 'string|required|min:5',
             'usn' => 'string|required|unique:students,usn',
         ]);
         $data['password'] = Hash::make($data['password']);
-        DB::transaction(function () {
+        DB::transaction(function () use($data) {
             $student = new Student();
             $student->fill($data);
             $student->save();
@@ -53,7 +53,7 @@ class StudentController extends Controller
             $user->fill($data);
             $user->details()->associate($student)->save();
         }, 5);
-        return ['message' => 'success'];
+        return redirect(route('students.index'))->with(['message' => 'success']);
     }
 
     /**
@@ -64,7 +64,7 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
-        return $student;
+        return view('student.show', ['student'=> $student]);
     }
 
     /**
@@ -75,6 +75,7 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
+        return view('student.edit', ['student'=>$student]);
     }
 
     /**
@@ -90,14 +91,14 @@ class StudentController extends Controller
             'name' => 'string|required',
             'usn' => 'string|required|unique:students,usn,' . $student->id . ',id',
         ]);
-        DB::transaction(function () {
+        DB::transaction(function () use($data, $student) {
             $student->fill($data);
             $user = $student->user;
             $user->fill($data);
             $user->save();
             $student->save();
         }, 5);
-        return $student;
+        return redirect(route('students.index'))->with(['message' => 'success']);
     }
 
     /**
@@ -108,9 +109,10 @@ class StudentController extends Controller
      */
     public function destroy(Student $student)
     {
-        DB::transaction(function () {
+        DB::transaction(function () use($student){
             $student->user->delete();
             $student->delete();
         });
+        return redirect(route('students.index'))->with(['message' => 'success']);
     }
 }
