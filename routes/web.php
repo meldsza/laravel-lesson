@@ -28,4 +28,6 @@ Route::resource('faculties', 'FacultyController');
 Route::resource('students', 'StudentController');
 
 Route::resource('modules.subModules', 'SubModuleController');
+Route::post('modules/{module}/subModules/createVideo', 'SubModuleController@storeVideo');
+Route::get('modules/{module}/subModules/createVideo', 'SubModuleController@createVideo');
 Route::resource('modules', 'ModuleController');

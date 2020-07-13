@@ -8,7 +8,8 @@
                 <div class="card-header">{{ __('Modules') }}</div>
 
                 <div class="card-body">
-                    <a class="btn btn-primary float-right mb-2" href="{{route('subModules.create')}}">Create Module</a>
+                    <a class="btn btn-primary float-right mb-2"
+                        href="{{route('modules.subModules.create', ['module'=> $module->id])}}">Create Module</a>
 
                     <table class="table">
                         <thead>
@@ -32,14 +33,15 @@
                                 </td>
 
                                 <td>
-                                    <form action="{{route('subModules.destroy', ['subModule'=>$subModule->id])}}"
+                                    <form
+                                        action="{{route('modules.subModules.destroy', ['module'=> $module->id,'subModule'=>$subModule->id])}}"
                                         method="POST">
                                         @csrf
                                         @method('delete')
                                         <a class="btn btn-primary mr-2"
-                                            href="{{route('subModules.show', ['subModule'=>$subModule->id])}}">View</a>
+                                            href="{{route('modules.subModules.show', ['module'=> $module->id,'subModule'=>$subModule->id])}}">View</a>
                                         <a class="btn btn-primary mr-2"
-                                            href="{{route('subModules.edit', ['subModule'=>$subModule->id])}}">Update</a>
+                                            href="{{route('modules.subModules.edit', ['module'=> $module->id,'subModule'=>$subModule->id])}}">Update</a>
                                         <button class="btn btn-danger mr-2" type="submit">Delete</button>
                                     </form>
                                 </td>
