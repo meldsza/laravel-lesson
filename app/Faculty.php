@@ -11,4 +11,8 @@ class Faculty extends Model
     {
         return $this->morphOne('App\User', 'details');
     }
+    public function test()
+    {
+        return $this->morphOne('App\User', 'details');
+    }
 }
