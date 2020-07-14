@@ -6,6 +6,7 @@ use App\Faculty;
 use App\User;
 use DB;
 use Hash;
+use Auth;
 use Illuminate\Http\Request;
 
 class FacultyController extends Controller
@@ -55,6 +56,23 @@ class FacultyController extends Controller
             $user->details()->associate($faculty)->save();
         }, 5);
         return redirect(route('faculties.index'))->with(['message' => 'success']);
+    }
+    public function addDetails(Request $request)
+    {
+        $data = $request->validate([
+            
+            'employee_code' => 'string|required',
+            'designation' => 'string|required',
+        ]);
+        
+        DB::transaction(function () use($data) {
+            $faculty = new Faculty();
+            $faculty->fill($data);
+            $faculty->save();
+            $user = Auth::user();
+            $user->details()->associate($faculty)->save();
+        }, 5);
+        return redirect()->intended('/');
     }
 
     /**

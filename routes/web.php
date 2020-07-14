@@ -19,6 +19,11 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('/login/{provider}/', 'Auth\LoginController@redirectToProvider');
+Route::get('/login/{provider}/callback', 'Auth\LoginController@handleProviderCallback');
+Route::post('/register/faculty', 'Auth\FacultyController@addDetails')->middleware('auth');
+Route::post('/register/student', 'Auth\StudentController@addDetails')->middleware('auth');
+
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::view('/test', 'test');

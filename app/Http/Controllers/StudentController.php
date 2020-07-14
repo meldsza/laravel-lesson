@@ -6,6 +6,7 @@ use App\Student;
 use App\User;
 use DB;
 use Hash;
+use Auth;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -59,6 +60,21 @@ class StudentController extends Controller
             $user->details()->associate($student)->save();
         }, 5);
         return redirect(route('students.index'))->with(['message' => 'success']);
+    }
+    public function addDetails(Request $request)
+    {
+        $data = $request->validate([
+            'usn' => 'string|required|unique:students,usn'
+        ]);
+     
+        DB::transaction(function () use($data) {
+            $student = new Student();
+            $student->fill($data);
+            $student->save();
+            $user = Auth::user();
+            $user->details()->associate($student)->save();
+        }, 5);
+        return redirect()->intended('/');
     }
 
     /**

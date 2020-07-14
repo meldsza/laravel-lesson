@@ -6,12 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Faculty extends Model
 {
-    protected $fillable = ['employee_code', 'designation', 'test', 'test2', 'test3];
+    protected $fillable = ['employee_code', 'designation'];
     public function user()
-    {
-        return $this->morphOne('App\User', 'details');
-    }
-    public function test()
     {
         return $this->morphOne('App\User', 'details');
     }
