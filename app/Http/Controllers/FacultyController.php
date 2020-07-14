@@ -16,9 +16,15 @@ class FacultyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('faculty.index', ['faculties'=>Faculty::all()]);
+        $faculties = Faculty::paginate(50);
+        if ($request->wantsJson()) {
+            return $faculties;
+        }
+        else{
+            return view('faculty.index', ['faculties'=>$faculties]);
+        }
     }
 
     /**
@@ -55,7 +61,12 @@ class FacultyController extends Controller
             $user->fill($data);
             $user->details()->associate($faculty)->save();
         }, 5);
-        return redirect(route('faculties.index'))->with(['message' => 'success']);
+        if ($request->wantsJson()) {
+            return ['message' => 'success'];
+        }
+        else{
+            return redirect(route('faculties.index'))->with(['message' => 'success']);
+        }
     }
     public function addDetails(Request $request)
     {
@@ -73,6 +84,7 @@ class FacultyController extends Controller
             $user->details()->associate($faculty)->save();
         }, 5);
         return redirect()->intended('/');
+        
     }
 
     /**
@@ -81,9 +93,14 @@ class FacultyController extends Controller
      * @param  \App\Faculty  $faculty
      * @return \Illuminate\Http\Response
      */
-    public function show(Faculty $faculty)
+    public function show(Request $request,Faculty $faculty)
     {
-        return view('faculty.show',['faculty' => $faculty]);
+        if ($request->wantsJson()) {
+            return $faculty;
+        }
+        else{
+            return view('faculty.show',['faculty' => $faculty]);
+        }
     }
 
     /**
@@ -118,7 +135,12 @@ class FacultyController extends Controller
             $user->save();
             $faculty->save();
         }, 5);
-        return redirect(route('faculties.index'))->with(['message' => 'success']);
+        if ($request->wantsJson()) {
+            return ['message' => 'success'];
+        }
+        else{
+            return redirect(route('faculties.index'))->with(['message' => 'success']);
+        }
     }
 
     /**
@@ -127,12 +149,17 @@ class FacultyController extends Controller
      * @param  \App\Faculty  $faculty
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Faculty $faculty)
+    public function destroy(Request $request,Faculty $faculty)
     {
         DB::transaction(function () use($faculty) {
             $faculty->user->delete();
             $faculty->delete();
         });
-        return redirect(route('faculties.index'))->with(['message' => 'success']);
+        if ($request->wantsJson()) {
+            return ['message' => 'success'];
+        }
+        else{
+            return redirect(route('faculties.index'))->with(['message' => 'success']);
+        }
     }
 }
