@@ -21,8 +21,8 @@ Auth::routes();
 
 Route::get('/login/{provider}/', 'Auth\LoginController@redirectToProvider');
 Route::get('/login/{provider}/callback', 'Auth\LoginController@handleProviderCallback');
-Route::post('/register/faculty', 'Auth\FacultyController@addDetails')->middleware('auth');
-Route::post('/register/student', 'Auth\StudentController@addDetails')->middleware('auth');
+Route::post('/register/faculty', 'Auth\FacultyController@addDetails')->middleware('auth')->name('login.details.faculty');
+Route::post('/register/student', 'Auth\StudentController@addDetails')->middleware('auth')->name('login.details.student');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
